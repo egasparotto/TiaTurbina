@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using System;
@@ -16,9 +18,13 @@ namespace TiaTurbina
             services.IniciarBot();
         }
 
-        public void Configure(Bot bot)
+        public void Configure(IApplicationBuilder app, Bot bot)
         {
-            bot.ExecutarAsync().GetAwaiter().GetResult();
+            bot.ExecutarAsync();
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Bot sendo Executado");
+            });
         }
     }
 }
