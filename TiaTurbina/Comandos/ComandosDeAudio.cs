@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using DSharpPlus.VoiceNext;
 
 using Microsoft.Extensions.Logging;
@@ -100,9 +101,40 @@ namespace TiaTurbina.Comandos
         }
 
         [Command("Vitoria")]
+        [Description("Executa o tema da vitória")]
         private async Task Vitoria(CommandContext ctx)
         {
-            await ExecutarMusica(ctx, "Musicas/vitoria.m4a");
+            try
+            {
+                await ExecutarMusica(ctx, "Musicas/vitoria.m4a");
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
+            }
+            catch
+            {
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsdown:"));
+            }
+        }
+
+
+        [Command("Parar")]
+        [Description("Para a execução de uma música")]
+        public async Task Parar(CommandContext ctx)
+        {
+            try
+            {
+                var vnext = ctx.Client.GetVoiceNext();
+
+                var vnc = vnext.GetConnection(ctx.Guild);
+                if (vnc == null)
+                    ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Info, "Tia Turbina", "Bot não está conectado neste canal", DateTime.Now);
+
+                vnc.Disconnect();
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
+            }
+            catch
+            {
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsdown:"));
+            }
         }
     }
 }
