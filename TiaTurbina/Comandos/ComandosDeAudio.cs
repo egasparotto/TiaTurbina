@@ -100,6 +100,25 @@ namespace TiaTurbina.Comandos
             }
         }
 
+        private async Task SairAposTerminarMusica(CommandContext ctx)
+        {
+            var vnext = ctx.Client.GetVoiceNext();
+            if (vnext == null)
+            {
+                // not enabled
+                ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Error, "Tia Turbina", "VNext não Habilitado", DateTime.Now);
+                return;
+            }
+
+            // check whether we aren't already connected
+            var vnc = vnext.GetConnection(ctx.Guild);
+            while (vnc != null && vnc.IsPlaying)
+            {
+                await Task.Delay(30000);
+            }
+            vnc?.Disconnect();
+        }
+
         [Command("Vitoria")]
         [Description("Executa o tema da vitória")]
         private async Task Vitoria(CommandContext ctx)
@@ -108,6 +127,23 @@ namespace TiaTurbina.Comandos
             {
                 await ExecutarMusica(ctx, "Musicas/vitoria.m4a");
                 await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
+                await SairAposTerminarMusica(ctx);
+            }
+            catch
+            {
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsdown:"));
+            }
+        }
+
+        [Command("Finivest")]
+        [Description("Executa o tema do finivest")]
+        private async Task Finivest(CommandContext ctx)
+        {
+            try
+            {
+                await ExecutarMusica(ctx, "Musicas/finivest.m4a");
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
+                await SairAposTerminarMusica(ctx);
             }
             catch
             {
