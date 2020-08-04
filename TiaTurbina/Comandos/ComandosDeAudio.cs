@@ -151,6 +151,21 @@ namespace TiaTurbina.Comandos
             }
         }
 
+        [Command("Eunaotolouco")]
+        [Description("Executa o audio eu não to louco")]
+        private async Task EuNaoToLouco(CommandContext ctx)
+        {
+            try
+            {
+                await ExecutarMusica(ctx, "Musicas/eunaotolouco.mp3");
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
+                await SairAposTerminarMusica(ctx);
+            }
+            catch
+            {
+                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsdown:"));
+            }
+        }
 
         [Command("Parar")]
         [Description("Para a execução de uma música")]
