@@ -52,15 +52,23 @@ namespace TiaTurbina.Entidades.Audio
                     Arguments = $"-j --flat-playlist \"{URL}\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     CreateNoWindow = true
                 }
             };
-            processo.Start();
-            while (!processo.StandardOutput.EndOfStream)
+            try
             {
+                processo.Start();
+                while (!processo.StandardOutput.EndOfStream)
+                {
+                    return Video.DeJson(processo.StandardOutput.ReadLine());
+                }
                 return Video.DeJson(processo.StandardOutput.ReadLine());
             }
-            return Video.DeJson(processo.StandardOutput.ReadLine());
+            catch
+            {
+                throw new Exception(processo.StandardError.ReadLine());
+            }
         }
     }
 }
