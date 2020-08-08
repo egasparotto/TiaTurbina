@@ -49,7 +49,7 @@ namespace TiaTurbina.Entidades.Audio
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "Musicas/youtube-dl",
-                    Arguments = $"-j --flat-playlist \"{URL}\"",
+                    Arguments = $"-j -o \"%TEMP%\" --flat-playlist \"{URL}\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
