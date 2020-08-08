@@ -16,7 +16,7 @@ namespace TiaTurbina.Entidades.Audio
             Arquivo = arquivo;
         }
 
-        protected override Stream ObterStream()
+        protected override async Task<Stream> ObterStream()
         {
             var ffmpeg_inf = new ProcessStartInfo
             {
@@ -27,7 +27,7 @@ namespace TiaTurbina.Entidades.Audio
                 RedirectStandardError = true
             };
             var ffmpeg = Process.Start(ffmpeg_inf);
-            return ffmpeg.StandardOutput.BaseStream;
+            return await Task.FromResult(ffmpeg.StandardOutput.BaseStream);
         }
 
         public override string ValidaAudio()
