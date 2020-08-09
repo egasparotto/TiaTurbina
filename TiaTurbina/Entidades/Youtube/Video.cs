@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,30 +74,44 @@ namespace TiaTurbina.Entidades.Youtube
         public Task<IEnumerable<FormatoDoVideo>> ObterFormatos()
         {
             if (Formatos != null) return Formatos;
-            var t = Task.Factory.StartNew(() => {
-                var processo = new Process
+            var t = Task.Factory.StartNew(() =>
+            {
+
+                string caminho = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+                string ydlPath = @"Python/python.exe";
+                string ydl = caminho + @"/Python/youtube-dl";
+                Process proc = new Process();
+
+                try
                 {
-                    StartInfo = new ProcessStartInfo
+                    proc.EnableRaisingEvents = false;
+                    proc.StartInfo.ErrorDialog = false;
+                    proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.FileName = ydlPath;
+                    //proc.StartInfo.Arguments = $ydl+"-j --flat-playlist \"{URL}\"";
+                    proc.StartInfo.Arguments = ydl + $" - j " + Id;
+                    proc.StartInfo.Verb = "runas";
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.CreateNoWindow = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.Start();
+
+                    var saidaNormal = proc.StandardOutput.ReadToEnd();
+                    var saidaErro = proc.StandardError.ReadToEnd();
+                    proc.WaitForExit();
+                    var codigoDeErro = proc.ExitCode;
+                    if (codigoDeErro != 0)
                     {
-                        FileName = "Musicas/youtube-dl",
-                        Arguments = "-j " + Id,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        CreateNoWindow = true
+                        return null;
                     }
-                };
-                processo.Start();
-                var saidaNormal = processo.StandardOutput.ReadToEnd();
-                var saidaErro = processo.StandardError.ReadToEnd();
-                processo.WaitForExit();
-                var codigoDeErro = processo.ExitCode;
-                if (codigoDeErro != 0)
-                {
-                    return null;
+                    var jo = JObject.Parse(saidaNormal);
+                    return ResolveFormatos(jo["formats"].ToString());
                 }
-                var jo = JObject.Parse(saidaNormal);
-                return ResolveFormatos(jo["formats"].ToString());
+                catch
+                {
+                    throw new Exception(proc.StandardError.ReadToEnd());
+                }
             });
             Formatos = t;
             return t;

@@ -44,30 +44,36 @@ namespace TiaTurbina.Entidades.Audio
 
         public Video ResolverLink()
         {
-            var processo = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "Musicas/youtube-dl",
-                    Arguments = $"-j -o \"%TEMP%\" --flat-playlist \"{URL}\"",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
-            };
+            string caminho = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+            string ydlPath = @"Python/python.exe";
+            string ydl = caminho + @"/Python/youtube-dl";
+            Process proc = new Process();
+
             try
             {
-                processo.Start();
-                while (!processo.StandardOutput.EndOfStream)
-                {
-                    return Video.DeJson(processo.StandardOutput.ReadLine());
-                }
-                return Video.DeJson(processo.StandardOutput.ReadLine());
+                proc.EnableRaisingEvents = false;
+                proc.StartInfo.ErrorDialog = false;
+                proc.StartInfo.RedirectStandardError = true;
+                proc.StartInfo.FileName = ydlPath;
+                //proc.StartInfo.Arguments = $ydl+"-j --flat-playlist \"{URL}\"";
+                proc.StartInfo.Arguments = ydl + $" -j --flat-playlist \"{URL}\"";
+                proc.StartInfo.Verb = "runas";
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.CreateNoWindow = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.Start();
+
+                var video = Video.DeJson(proc.StandardOutput.ReadLine());
+
+                proc.WaitForExit();
+                proc.Close();
+
+                return video;
             }
             catch
             {
-                throw new Exception(processo.StandardError.ReadLine());
+                throw new Exception(proc.StandardError.ReadToEnd());
             }
         }
     }
