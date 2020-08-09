@@ -14,26 +14,36 @@ namespace TiaTurbina.Entidades.Audio
     public class AudioDoYoutube : AudioBase
     {
         public Uri URL { get; }
+        public Video Video { get; }
+        public FormatoDoVideo MelhorFormato { get; }
+
         public AudioDoYoutube(Uri url, string descricao) : base(descricao)
         {
             URL = url;
+            Video = ResolverLink();
+            if(Video != null)
+            {
+                MelhorFormato = Video.ObterMelhorFormatoDeTransmissao().GetAwaiter().GetResult();
+            }
         }
 
         public override string ValidaAudio()
         {
+            if(Video == null || MelhorFormato == null)
+            {
+                return "Erro ao processar vídeo";
+            }
             return "";
         }
 
         protected override async Task<Stream> ObterStream()
         {
-            var video = ResolverLink();
-
             var processo = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "Musicas/ffmpeg",
-                    Arguments = $"-xerror -i \"{(await video.ObterMelhorFormatoDeTransmissao()).Url}\" -ac 2 -f s16le -ar 48000 pipe:1",
+                    Arguments = $"-xerror -i \"{MelhorFormato.Url}\" -ac 2 -f s16le -ar 48000 pipe:1",
                     RedirectStandardOutput = true
                 }
             };
@@ -42,7 +52,7 @@ namespace TiaTurbina.Entidades.Audio
             return processo.StandardOutput.BaseStream;
         }
 
-        public Video ResolverLink()
+        private Video ResolverLink()
         {
             string caminho = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
@@ -56,7 +66,6 @@ namespace TiaTurbina.Entidades.Audio
                 proc.StartInfo.ErrorDialog = false;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.FileName = ydlPath;
-                //proc.StartInfo.Arguments = $ydl+"-j --flat-playlist \"{URL}\"";
                 proc.StartInfo.Arguments = ydl + $" -j --flat-playlist \"{URL}\"";
                 proc.StartInfo.Verb = "runas";
                 proc.StartInfo.UseShellExecute = false;
@@ -73,7 +82,7 @@ namespace TiaTurbina.Entidades.Audio
             }
             catch
             {
-                throw new Exception(proc.StandardError.ReadToEnd());
+                return null;
             }
         }
     }
