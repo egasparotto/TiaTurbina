@@ -46,11 +46,18 @@ namespace TiaTurbina.Entidades.Youtube
         public static Video DeJson(string json)
         {
             var jo = JObject.Parse(json);
-            var vid = new Video(jo["id"].ToString(), jo["title"].ToString())
+            try
             {
-                Formatos = Task.FromResult(ResolveFormatos(jo["formats"].ToString()))
-            };
-            return vid;
+                var vid = new Video(jo["id"].ToString(), jo["title"].ToString())
+                {
+                    Formatos = Task.FromResult(ResolveFormatos(jo["formats"].ToString()))
+                };
+                return vid;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static IEnumerable<FormatoDoVideo> ResolveFormatos(string jsonArray)
