@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using TiaTurbina.Entidades.Audio;
 using TiaTurbina.Executores;
+using TiaTurbina.Filas;
 using TiaTurbina.Listas;
 
 namespace TiaTurbina.Comandos
@@ -39,10 +40,11 @@ namespace TiaTurbina.Comandos
 
         private void RegistrarMusicas()
         {
+            var gerenciadorDeFilas = (GerenciadorDeFilas)_serviceProvider.GetService(typeof(GerenciadorDeFilas));
             foreach (var audio in ListaDeAudios.Lista)
             {
-                var executor = new ExecutorDeAudio(audio.Value);
-                Comando funcao = executor.ExecutarMusica;
+                var comandoDinamico = new ComandosDinamicosDeAudio(audio.Value,gerenciadorDeFilas);
+                Comando funcao = comandoDinamico.ExecutarMusica;
                 var funcaoDoComando = new CommandOverloadBuilder(funcao);
                 var argumentos = funcaoDoComando.Arguments;
                 var comando = new CommandBuilder()

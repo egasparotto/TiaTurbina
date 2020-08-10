@@ -13,11 +13,19 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using TiaTurbina.Entidades.Audio;
+using TiaTurbina.Filas;
 
 namespace TiaTurbina.Comandos
 {
     class ComandosDeAudio : BaseCommandModule
     {
+        public GerenciadorDeFilas GerenciadorDeFilas { get; }
+
+        public ComandosDeAudio(GerenciadorDeFilas gerenciadorDeFilas)
+        {
+            GerenciadorDeFilas = gerenciadorDeFilas;
+        }
+
         [Command("Parar")]
         [Description("Para a execução de uma música")]
         public async Task Parar(CommandContext ctx)
@@ -31,6 +39,7 @@ namespace TiaTurbina.Comandos
                     ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Info, "Tia Turbina", "Bot não está conectado neste canal", DateTime.Now);
 
                 vnc.Disconnect();
+                GerenciadorDeFilas.ObterFila(ctx).LimparFila();
                 await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
             }
             catch

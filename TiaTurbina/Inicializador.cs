@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using TiaTurbina.Comandos;
+using TiaTurbina.Executores;
+using TiaTurbina.Filas;
 
 namespace TiaTurbina
 {
@@ -18,6 +20,8 @@ namespace TiaTurbina
         public static void IniciarBot(this IServiceCollection services)
         {
             services.AddSingleton<Bot>();
+            services.AddSingleton<ExecutorDeAudio>();
+            services.AddSingleton<GerenciadorDeFilas>();
 
             services.AddSingleton(x =>
             {
