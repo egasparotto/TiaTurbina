@@ -16,7 +16,7 @@ namespace TiaTurbina.Listas
             {"Eunaotolouco", new AudioDeArquivo("Musicas/eunaotolouco.mp3", "Eu não to louco?") },
             {"Cavalo", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=1xzGPPxKgJM"), "Cavalo") },
             {"Credimatone", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=tz7E4nJMGvM"), "211-00-11") },
-            {"HojeNao", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=FtwM6tyVLCs"), "Hoje sim, hoje sim") }
+            {"HojeNao", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=-Ihuae45HiY"), "Hoje sim, hoje sim") }
         };
     }
 }
