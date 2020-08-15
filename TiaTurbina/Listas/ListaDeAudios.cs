@@ -21,7 +21,8 @@ namespace TiaTurbina.Listas
             {"Impossivel", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=XAYhNHhxN0A"), " Pao pao pao pao pao pao pao pao pao pao pao pao pao pao pao pao , piruliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiito , piruliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiito , piruliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiito , BALA !") },
             {"FinalFantasy", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=-YCN-a0NsNk"), "Ganhei porra!") },
             {"Naruto", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=cRVj8yU_zdo"), "Não sei, nunca vi naruto") },
-            {"BreathOfFire", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=UZvzH0Hbokc"), "É uma música") }
+            {"BreathOfFire", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=UZvzH0Hbokc"), "É uma música") },
+            {"MaisOuMenos", new AudioDoYoutube(new Uri("https://www.youtube.com/watch?v=Q1tVzEs9zoM"), "Ehhhhhhhhh mais ou menos") }
         };
     }
 }
