@@ -15,41 +15,53 @@ namespace TiaTurbina.Entidades.Audio
     {
         public Uri URL { get; }
         public Video Video { get; }
-        public FormatoDoVideo MelhorFormato { get; }
+        private MemoryStream Stream { get; }
 
         public AudioDoYoutube(Uri url, string descricao) : base(descricao)
         {
             URL = url;
             Video = ResolverLink();
-            if(Video != null)
+            Stream = new MemoryStream();
+
+            if (Video != null)
             {
-                MelhorFormato = Video.ObterMelhorFormatoDeTransmissao().GetAwaiter().GetResult();
+               var melhorFormato = Video.ObterMelhorFormatoDeTransmissao().GetAwaiter().GetResult();
+
+                var processo = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "Musicas/ffmpeg",
+                        Arguments = $"-xerror -i \"{melhorFormato.Url}\" -ac 2 -f s16le -ar 48000 pipe:1",
+                        RedirectStandardOutput = true
+                    }
+                };
+                processo.Start();
+                try
+                {
+                    processo.StandardOutput.BaseStream.CopyTo(Stream);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
             }
         }
 
         public override string ValidaAudio()
         {
-            if(Video == null || MelhorFormato == null)
+            if(Video == null || Stream == null)
             {
                 return "Erro ao processar vídeo";
             }
             return "";
         }
 
-        protected override async Task<Stream> ObterStream()
+        protected override Stream ObterStream()
         {
-            var processo = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "Musicas/ffmpeg",
-                    Arguments = $"-xerror -i \"{MelhorFormato.Url}\" -ac 2 -f s16le -ar 48000 pipe:1",
-                    RedirectStandardOutput = true
-                }
-            };
-            processo.Start();
-
-            return processo.StandardOutput.BaseStream;
+            Stream.Position = 0;
+            return Stream;
         }
 
         private Video ResolverLink()

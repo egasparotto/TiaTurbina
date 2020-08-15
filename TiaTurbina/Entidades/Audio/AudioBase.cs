@@ -7,7 +7,7 @@ namespace TiaTurbina.Entidades.Audio
 {
     public abstract class AudioBase
     {
-        protected abstract Task<Stream> ObterStream();
+        protected abstract Stream ObterStream();
 
         public abstract string ValidaAudio();
 
@@ -22,7 +22,7 @@ namespace TiaTurbina.Entidades.Audio
         {
             using (var ms = new MemoryStream())
             {
-                var stream = await ObterStream();
+                var stream = ObterStream();
 
                 await stream.CopyToAsync(ms);
                 ms.Position = 0;
