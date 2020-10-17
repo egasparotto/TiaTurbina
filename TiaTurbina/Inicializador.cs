@@ -19,7 +19,6 @@ namespace TiaTurbina
     {
         public static void IniciarBot(this IServiceCollection services)
         {
-            services.AddSingleton<Bot>();
             services.AddSingleton<ExecutorDeAudio>();
             services.AddSingleton<GerenciadorDeFilas>();
 
