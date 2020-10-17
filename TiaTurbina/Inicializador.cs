@@ -30,9 +30,7 @@ namespace TiaTurbina
                 {
                     Token = configuracao.GetValue<string>("Token"),
                     TokenType = TokenType.Bot,
-                    AutoReconnect = true,
-                    LogLevel = LogLevel.Debug,
-                    UseInternalLogHandler = true
+                    AutoReconnect = true
 
                 };
             });

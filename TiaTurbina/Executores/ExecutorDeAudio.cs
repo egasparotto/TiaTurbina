@@ -2,6 +2,8 @@
 using DSharpPlus.Entities;
 using DSharpPlus.VoiceNext;
 
+using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +26,11 @@ namespace TiaTurbina.Executores
 
             var vnc = vnext.GetConnection(ctx.Guild);
             if (vnc != null)
-                ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Info, "Tia Turbina", "Bot ja conectado neste canal", DateTime.Now);
+                ctx.Client.Logger.LogInformation("Tia Turbina", "Bot ja conectado neste canal", DateTime.Now);
 
             var chn = ctx.Member?.VoiceState?.Channel;
             if (chn == null)
-                ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Error, "Tia Turbina", "Usuário deve estar conectado em um canal de audio", DateTime.Now);
+                ctx.Client.Logger.LogInformation("Tia Turbina", "Usuário deve estar conectado em um canal de audio", DateTime.Now);
 
             return await vnext.ConnectAsync(chn);
         }
@@ -42,7 +44,7 @@ namespace TiaTurbina.Executores
             if (vnext == null)
             {
                 // not enabled
-                ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Error, "Tia Turbina", "VNext não Habilitado", DateTime.Now);
+                ctx.Client.Logger.LogError("Tia Turbina", "VNext não Habilitado", DateTime.Now);
                 return;
             }
 
@@ -58,7 +60,7 @@ namespace TiaTurbina.Executores
             if (!string.IsNullOrEmpty(validacao))
             {
                 // file does not exist
-                ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Error, "Tia Turbina", validacao, DateTime.Now);
+                ctx.Client.Logger.LogError("Tia Turbina", validacao, DateTime.Now);
                 return;
             }
 

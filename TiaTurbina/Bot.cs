@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 
 using System;
@@ -31,6 +32,7 @@ namespace TiaTurbina
             Cliente.Ready += Cliente_Ready;
             Cliente.ClientErrored += Cliente_ClientErrored;
 
+
             Comandos.IniciarComandos();
 
             await Cliente.ConnectAsync();
@@ -38,7 +40,7 @@ namespace TiaTurbina
             await Task.Delay(-1);
         }
 
-        private async Task Cliente_ClientErrored(DSharpPlus.EventArgs.ClientErrorEventArgs e)
+        private async Task Cliente_ClientErrored(DiscordClient client, ClientErrorEventArgs e)
         {
             var atividade = new DiscordActivity("Vish Pifei", ActivityType.Streaming) 
             { 
@@ -47,7 +49,7 @@ namespace TiaTurbina
             await Cliente.UpdateStatusAsync(activity: atividade, userStatus: UserStatus.Idle);
         }
 
-        private async Task Cliente_Ready(DSharpPlus.EventArgs.ReadyEventArgs e)
+        private async Task Cliente_Ready(DiscordClient cliente, DSharpPlus.EventArgs.ReadyEventArgs e)
         {
             var atividade = new DiscordActivity("Bot do MetaGames", ActivityType.Streaming)
             {

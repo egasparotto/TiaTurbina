@@ -36,7 +36,7 @@ namespace TiaTurbina.Comandos
 
                 var vnc = vnext.GetConnection(ctx.Guild);
                 if (vnc == null)
-                    ctx.Client.DebugLogger.LogMessage(DSharpPlus.LogLevel.Info, "Tia Turbina", "Bot não está conectado neste canal", DateTime.Now);
+                    ctx.Client.Logger.LogInformation("Tia Turbina", "Bot não está conectado neste canal", DateTime.Now);
 
                 vnc.Disconnect();
                 GerenciadorDeFilas.ObterFila(ctx).LimparFila();
@@ -46,6 +46,14 @@ namespace TiaTurbina.Comandos
             {
                 await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsdown:"));
             }
+        }
+
+        [Command("P")]
+        [Description("Executar um audio a partir de um vídeo do youtube")]
+        public async Task ExecutarVideo(CommandContext ctx, [Description("URL do vídeo")] string URL)
+        {
+            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":arrows_counterclockwise:"));
+            await GerenciadorDeFilas.ObterFila(ctx).Adicionar(new ExecucaoDeAudio(new AudioDoYoutube(new Uri(URL),"Audio em tempo de Execucao"), ctx));
         }
     }
 }
