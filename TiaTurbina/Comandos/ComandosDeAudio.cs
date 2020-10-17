@@ -36,7 +36,7 @@ namespace TiaTurbina.Comandos
 
                 var vnc = vnext.GetConnection(ctx.Guild);
                 if (vnc == null)
-                    ctx.Client.Logger.LogInformation("Tia Turbina", "Bot não está conectado neste canal", DateTime.Now);
+                    ctx.Client.Logger.LogInformation(new EventId(1, "Tia Turbina"), "Bot não está conectado neste canal");
 
                 vnc.Disconnect();
                 GerenciadorDeFilas.ObterFila(ctx).LimparFila();

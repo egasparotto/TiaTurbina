@@ -5,6 +5,7 @@ using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace TiaTurbina
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            Cliente.Logger.LogInformation(new EventId(1,"Tia Turbina"), "Iniciando Bot");
             Cliente.UseVoiceNext();
 
             Cliente.Ready += Cliente_Ready;
@@ -40,6 +42,7 @@ namespace TiaTurbina
             Comandos.IniciarComandos();
 
             await Cliente.ConnectAsync();
+            Cliente.Logger.LogInformation(new EventId(1, "Tia Turbina"), "Bot Iniciado");
 
             await Task.Delay(-1);
         }

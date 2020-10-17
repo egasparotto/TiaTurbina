@@ -26,11 +26,14 @@ namespace TiaTurbina.Executores
 
             var vnc = vnext.GetConnection(ctx.Guild);
             if (vnc != null)
-                ctx.Client.Logger.LogInformation("Tia Turbina", "Bot ja conectado neste canal", DateTime.Now);
+                ctx.Client.Logger.LogInformation(new EventId(1, "Tia Turbina"), "Bot ja conectado neste canal");
 
             var chn = ctx.Member?.VoiceState?.Channel;
             if (chn == null)
-                ctx.Client.Logger.LogInformation("Tia Turbina", "Usuário deve estar conectado em um canal de audio", DateTime.Now);
+            {
+                ctx.Client.Logger.LogInformation(new EventId(1, "Tia Turbina"), "Usuário deve estar conectado em um canal de audio");
+                return null;
+            }
 
             return await vnext.ConnectAsync(chn);
         }
@@ -44,7 +47,7 @@ namespace TiaTurbina.Executores
             if (vnext == null)
             {
                 // not enabled
-                ctx.Client.Logger.LogError("Tia Turbina", "VNext não Habilitado", DateTime.Now);
+                ctx.Client.Logger.LogError(new EventId(1, "Tia Turbina"), "VNext não Habilitado");
                 return;
             }
 
@@ -53,6 +56,10 @@ namespace TiaTurbina.Executores
             if (vnc == null)
             {
                 vnc = await Entrar(ctx);
+                if(vnc == null)
+                {
+                    return;
+                }
             }
 
             var validacao = audio.ValidaAudio();
@@ -60,7 +67,7 @@ namespace TiaTurbina.Executores
             if (!string.IsNullOrEmpty(validacao))
             {
                 // file does not exist
-                ctx.Client.Logger.LogError("Tia Turbina", validacao, DateTime.Now);
+                ctx.Client.Logger.LogError(new EventId(1, "Tia Turbina"), validacao);
                 return;
             }
 
