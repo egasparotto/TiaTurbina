@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Entidades.Audio;
-using TiaTurbina.Filas;
+using TiaTurbina.Bot.Entidades.Audio;
+using TiaTurbina.Bot.Filas;
 
-namespace TiaTurbina.Comandos
+namespace TiaTurbina.Bot.Comandos
 {
     public class ComandosDinamicosDeAudio
     {
@@ -27,7 +27,7 @@ namespace TiaTurbina.Comandos
         internal async Task ExecutarMusica(CommandContext ctx)
         {
             await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":arrows_counterclockwise:"));
-            await GerenciadorDeFilas.ObterFila(ctx).Adicionar(new ExecucaoDeAudio(Audio,ctx));
+            await GerenciadorDeFilas.ObterFila(ctx).Adicionar(new ExecucaoDeAudio(Audio, ctx));
         }
 
         private async Task FinalizarExecucao(CommandContext ctx, VoiceNextConnection vnc)

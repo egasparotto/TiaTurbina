@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TiaTurbina.Entidades.Youtube
+namespace TiaTurbina.Bot.Entidades.Youtube
 {
     public class FormatoDoVideo
     {

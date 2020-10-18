@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace TiaTurbina
+namespace TiaTurbina.Apresentacao.Web
 {
     public class Program
     {

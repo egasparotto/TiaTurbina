@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TiaTurbina.Entidades.Youtube
+namespace TiaTurbina.Bot.Entidades.Youtube
 {
     public class Video
     {

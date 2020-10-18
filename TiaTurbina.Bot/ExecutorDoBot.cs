@@ -4,7 +4,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using System;
@@ -13,14 +12,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TiaTurbina.Comandos;
+using TiaTurbina.Bot.Comandos;
 
-namespace TiaTurbina
+namespace TiaTurbina.Bot
 {
 
-    class Bot: IHostedService
+    public class ExecutorDoBot
     {
-        public Bot(DiscordClient cliente, Comandos.Comandos comandos)
+        public ExecutorDoBot(DiscordClient cliente, Comandos.Comandos comandos)
         {
             Cliente = cliente;
             Comandos = comandos;
@@ -30,9 +29,9 @@ namespace TiaTurbina
         public Comandos.Comandos Comandos { get; }
 
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public async Task Executar()
         {
-            Cliente.Logger.LogInformation(new EventId(1,"Tia Turbina"), "Iniciando Bot");
+            Cliente.Logger.LogInformation(new EventId(1, "Tia Turbina"), "Iniciando Bot");
             Cliente.UseVoiceNext();
 
             Cliente.Ready += Cliente_Ready;
@@ -47,21 +46,16 @@ namespace TiaTurbina
             await Task.Delay(-1);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
         private async Task Cliente_ClientErrored(DiscordClient client, ClientErrorEventArgs e)
         {
-            var atividade = new DiscordActivity("Vish Pifei", ActivityType.Streaming) 
-            { 
+            var atividade = new DiscordActivity("Vish Pifei", ActivityType.Streaming)
+            {
                 StreamUrl = "https://www.twitch.tv/avj255"
             };
             await Cliente.UpdateStatusAsync(activity: atividade, userStatus: UserStatus.Idle);
         }
 
-        private async Task Cliente_Ready(DiscordClient cliente, DSharpPlus.EventArgs.ReadyEventArgs e)
+        private async Task Cliente_Ready(DiscordClient cliente, ReadyEventArgs e)
         {
             var atividade = new DiscordActivity("Bot do MetaGames", ActivityType.Streaming)
             {

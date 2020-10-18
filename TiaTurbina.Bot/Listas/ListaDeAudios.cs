@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Entidades.Audio;
+using TiaTurbina.Bot.Entidades.Audio;
 
-namespace TiaTurbina.Listas
+namespace TiaTurbina.Bot.Listas
 {
     public static class ListaDeAudios
     {

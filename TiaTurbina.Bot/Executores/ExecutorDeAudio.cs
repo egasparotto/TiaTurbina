@@ -9,10 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Entidades.Audio;
-using TiaTurbina.Filas;
+using TiaTurbina.Bot.Entidades.Audio;
 
-namespace TiaTurbina.Executores
+namespace TiaTurbina.Bot.Executores
 {
     public class ExecutorDeAudio
     {
@@ -56,7 +55,7 @@ namespace TiaTurbina.Executores
             if (vnc == null)
             {
                 vnc = await Entrar(ctx);
-                if(vnc == null)
+                if (vnc == null)
                 {
                     return;
                 }

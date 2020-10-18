@@ -9,16 +9,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Comandos;
-using TiaTurbina.Executores;
-using TiaTurbina.Filas;
+using TiaTurbina.Bot.Comandos;
+using TiaTurbina.Bot.Executores;
+using TiaTurbina.Bot.Filas;
 
-namespace TiaTurbina
+namespace TiaTurbina.Bot
 {
-    static class Inicializador
+    public static class Inicializador
     {
         public static void IniciarBot(this IServiceCollection services)
         {
+            services.AddSingleton<ExecutorDoBot>();
             services.AddSingleton<ExecutorDeAudio>();
             services.AddSingleton<GerenciadorDeFilas>();
 
@@ -27,7 +28,7 @@ namespace TiaTurbina
                 var configuracao = x.GetRequiredService<IConfiguration>();
                 return new DiscordConfiguration()
                 {
-                    Token = configuracao.GetValue<string>("Token"),
+                    Token = configuracao.GetSection("Token").Value,
                     TokenType = TokenType.Bot,
                     AutoReconnect = true
 

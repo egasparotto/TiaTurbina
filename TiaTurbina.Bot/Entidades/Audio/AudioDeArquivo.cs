@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TiaTurbina.Entidades.Audio
+namespace TiaTurbina.Bot.Entidades.Audio
 {
     public class AudioDeArquivo : AudioBase
     {
-        public String Arquivo { get; }
+        public string Arquivo { get; }
 
-        public AudioDeArquivo(string arquivo, string descricao):base(descricao)
+        public AudioDeArquivo(string arquivo, string descricao) : base(descricao)
         {
             Arquivo = arquivo;
         }

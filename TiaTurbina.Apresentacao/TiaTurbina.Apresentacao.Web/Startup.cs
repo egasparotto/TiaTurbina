@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace TiaTurbina
+using TiaTurbina.Bot;
+
+namespace TiaTurbina.Apresentacao.Web
 {
     class Startup
     {
@@ -13,7 +15,7 @@ namespace TiaTurbina
             services.AddApplicationInsightsTelemetry();
             services.AddLogging(log => log.AddConsole());
             services.IniciarBot();
-            services.AddHostedService<Bot>();
+            services.AddHostedService<ServicoDeExecucaoDoBot>();
         }
 
         public void Configure(IApplicationBuilder app, IConfiguration configuracao)

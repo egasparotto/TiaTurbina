@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Entidades.Youtube;
+using TiaTurbina.Bot.Entidades.Youtube;
 
-namespace TiaTurbina.Entidades.Audio
+namespace TiaTurbina.Bot.Entidades.Audio
 {
     public class AudioDoYoutube : AudioBase
     {
@@ -25,7 +25,7 @@ namespace TiaTurbina.Entidades.Audio
 
             if (Video != null)
             {
-               var melhorFormato = Video.ObterMelhorFormatoDeTransmissao().GetAwaiter().GetResult();
+                var melhorFormato = Video.ObterMelhorFormatoDeTransmissao().GetAwaiter().GetResult();
 
                 var processo = new Process
                 {
@@ -51,7 +51,7 @@ namespace TiaTurbina.Entidades.Audio
 
         public override string ValidaAudio()
         {
-            if(Video == null || Stream == null)
+            if (Video == null || Stream == null)
             {
                 return "Erro ao processar vídeo";
             }

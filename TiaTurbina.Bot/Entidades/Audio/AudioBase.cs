@@ -3,7 +3,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace TiaTurbina.Entidades.Audio
+namespace TiaTurbina.Bot.Entidades.Audio
 {
     public abstract class AudioBase
     {

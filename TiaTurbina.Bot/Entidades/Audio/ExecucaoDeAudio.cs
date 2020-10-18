@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TiaTurbina.Entidades.Audio
+namespace TiaTurbina.Bot.Entidades.Audio
 {
     public class ExecucaoDeAudio
     {

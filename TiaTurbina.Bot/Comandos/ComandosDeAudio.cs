@@ -12,10 +12,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Entidades.Audio;
-using TiaTurbina.Filas;
+using TiaTurbina.Bot.Entidades.Audio;
+using TiaTurbina.Bot.Filas;
 
-namespace TiaTurbina.Comandos
+namespace TiaTurbina.Bot.Comandos
 {
     class ComandosDeAudio : BaseCommandModule
     {
@@ -53,7 +53,7 @@ namespace TiaTurbina.Comandos
         public async Task ExecutarVideo(CommandContext ctx, [Description("URL do vídeo")] string URL)
         {
             await ctx.Message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":arrows_counterclockwise:"));
-            await GerenciadorDeFilas.ObterFila(ctx).Adicionar(new ExecucaoDeAudio(new AudioDoYoutube(new Uri(URL),"Audio em tempo de Execucao"), ctx));
+            await GerenciadorDeFilas.ObterFila(ctx).Adicionar(new ExecucaoDeAudio(new AudioDoYoutube(new Uri(URL), "Audio em tempo de Execucao"), ctx));
         }
     }
 }

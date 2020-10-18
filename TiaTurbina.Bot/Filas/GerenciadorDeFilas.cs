@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TiaTurbina.Entidades.Audio;
-using TiaTurbina.Executores;
+using TiaTurbina.Bot.Executores;
 
-namespace TiaTurbina.Filas
+namespace TiaTurbina.Bot.Filas
 {
     public class GerenciadorDeFilas
     {
-        protected IDictionary<ulong,FilaDeReproducaoDeAudio> Filas { get; }
+        protected IDictionary<ulong, FilaDeReproducaoDeAudio> Filas { get; }
 
         public ExecutorDeAudio ExecutorDeAudio { get; }
 
@@ -24,7 +23,7 @@ namespace TiaTurbina.Filas
 
         public FilaDeReproducaoDeAudio ObterFila(CommandContext ctx)
         {
-            if(Filas.TryGetValue(ctx.Guild.Id, out FilaDeReproducaoDeAudio fila))
+            if (Filas.TryGetValue(ctx.Guild.Id, out FilaDeReproducaoDeAudio fila))
             {
                 return fila;
             }
