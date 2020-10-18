@@ -15,11 +15,14 @@ namespace TiaTurbina.Apresentacao.Web
             services.AddApplicationInsightsTelemetry();
             services.AddLogging(log => log.AddConsole());
             services.IniciarBot();
-            services.AddHostedService<ServicoDeExecucaoDoBot>();
         }
 
-        public void Configure(IApplicationBuilder app, IConfiguration configuracao)
+        public void Configure(IApplicationBuilder app, ExecutorDoBot executorDoBot, IConfiguration configuracao)
         {
+#pragma warning disable CS4014 // Como esta chamada não é esperada, a execução do método atual continua antes de a chamada ser concluída
+            executorDoBot.Executar();
+#pragma warning restore CS4014 // Como esta chamada não é esperada, a execução do método atual continua antes de a chamada ser concluída
+
             app.Use(async (context, next) =>
             {
                 await next();
