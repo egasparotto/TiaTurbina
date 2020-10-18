@@ -15,14 +15,40 @@ namespace TiaTurbina.Bot.Entidades.Audio
     {
         public Uri URL { get; }
         public Video Video { get; }
-        private MemoryStream Stream { get; }
+        private MemoryStream Stream { get; set; }
 
         public AudioDoYoutube(Uri url, string descricao) : base(descricao)
         {
             URL = url;
             Video = ResolverLink();
-            Stream = new MemoryStream();
+        }
 
+        public override string ValidaAudio()
+        {
+            if (Stream == null)
+            {
+                CarregarVideo();
+            }
+            if (Video == null || Stream == null)
+            {
+                return "Erro ao processar vídeo";
+            }
+            return "";
+        }
+
+        protected override Stream ObterStream()
+        {
+            Stream.Position = 0;
+            if (Stream == null)
+            {
+                CarregarVideo();
+            }
+            return Stream;
+        }
+
+        protected void CarregarVideo()
+        {
+            Stream = new MemoryStream();
             if (Video != null)
             {
                 var melhorFormato = Video.ObterMelhorFormatoDeTransmissao().GetAwaiter().GetResult();
@@ -45,23 +71,7 @@ namespace TiaTurbina.Bot.Entidades.Audio
                 {
                     Console.WriteLine(e.Message);
                 }
-
             }
-        }
-
-        public override string ValidaAudio()
-        {
-            if (Video == null || Stream == null)
-            {
-                return "Erro ao processar vídeo";
-            }
-            return "";
-        }
-
-        protected override Stream ObterStream()
-        {
-            Stream.Position = 0;
-            return Stream;
         }
 
         private Video ResolverLink()
