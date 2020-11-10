@@ -31,7 +31,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '-o $(build.artifactStagingDirectory'
+    arguments: '-o $(build.artifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
