@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using System.Threading;
+
 using TiaTurbina.Bot;
 
 namespace TiaTurbina.Apresentacao.Web
@@ -19,15 +21,14 @@ namespace TiaTurbina.Apresentacao.Web
 
         public void Configure(IApplicationBuilder app, ExecutorDoBot executorDoBot, IConfiguration configuracao)
         {
-#pragma warning disable CS4014 // Como esta chamada não é esperada, a execução do método atual continua antes de a chamada ser concluída
-            executorDoBot.Executar();
-#pragma warning restore CS4014 // Como esta chamada não é esperada, a execução do método atual continua antes de a chamada ser concluída
-
+            var threadDoBot = new Thread(new ThreadStart(executorDoBot.Iniciar));
+            threadDoBot.Start();
             app.Use(async (context, next) =>
             {
                 await next();
                 context.Response.Redirect($"https://discord.com/oauth2/authorize?client_id={configuracao.GetValue<string>("ID")}&scope=bot&permissions=1");
             });
+            System.Console.WriteLine("FOi");
         }
     }
 }

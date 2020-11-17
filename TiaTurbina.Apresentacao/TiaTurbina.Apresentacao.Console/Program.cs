@@ -11,7 +11,7 @@ namespace TiaTurbina.Apresentacao.Console
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
            var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -29,7 +29,7 @@ namespace TiaTurbina.Apresentacao.Console
             var serviceProvider = services.BuildServiceProvider();
             var executor = serviceProvider.GetRequiredService<ServicoDeExecucaoDoBot>();
 
-            await executor.Iniciar();
+            executor.Iniciar();
 
         }
     }

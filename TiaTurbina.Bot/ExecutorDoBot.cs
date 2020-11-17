@@ -29,7 +29,12 @@ namespace TiaTurbina.Bot
         public Comandos.Comandos Comandos { get; }
 
 
-        public async Task Executar()
+        public void Iniciar()
+        {
+            Executar().GetAwaiter().GetResult();
+        }
+
+        private async Task Executar()
         {
             Cliente.Logger.LogInformation(new EventId(1, "Tia Turbina"), "Iniciando Bot");
             Cliente.UseVoiceNext();

@@ -16,9 +16,9 @@ namespace TiaTurbina.Apresentacao.Console
             ExecutorDoBot = executorDoBot;
         }
 
-        public async Task Iniciar()
+        public void Iniciar()
         {
-            await ExecutorDoBot.Executar();
+            ExecutorDoBot.Iniciar();
         }
     }
 }
